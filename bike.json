@@ -1,0 +1,10 @@
+{
+    "make": "Kawasaki",
+    "model": "Ninja 650R",
+    "year": "2007",
+    "frontSprocketTeeth": 15,
+    "rearSprocketTeeth": 45,
+    "tireDiameter": 30,
+    "pulsesPerRevolution": 2,
+    "miles": 20000
+}

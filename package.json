@@ -1,16 +1,20 @@
 {
-  "name": "momentum",
-  "version": "0.0.1",
-  "description": "A gauge cluster for a motorcycle",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Joseph Tams",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^2.3.0"
-  }
+    "name": "momentum",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "ejs": "^3.1.5",
+        "express": "^4.17.1",
+        "node-wifi": "^2.0.14",
+        "onoff": "^6.0.1",
+        "socket.io": "^3.0.5"
+    }
 }

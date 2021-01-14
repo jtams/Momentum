@@ -1,49 +1,46 @@
 const express = require("express");
 const app = express();
-var path = require("path");
-const server = require("http").createServer(app);
-const io = require("socket.io").listen(server);
+const path = require("path");
+const cors = require("cors");
+const http = require("http");
+const socketio = require("socket.io");
+const server = http.createServer(app);
+const io = socketio(server);
+var Gpio = require("onoff").Gpio;
+const Bike = require("./src/bike.js");
+const bikeData = require("./bike.json");
 
-users = [];
+const bike = new Bike(bikeData);
 
-server.listen(3220);
-console.log("server running on port 3220");
-app.use("/web", express.static(path.join(__dirname, "web")));
+port = 8080;
+
+app.use("/", express.static(path.resolve("./src")));
+app.use("/css", express.static(path.resolve("./views/css")));
+app.use("/js", express.static(path.resolve("./views/js")));
+app.use(cors());
+app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/web/index.html");
-    ("");
+    res.render("index");
 });
 
-io.sockets.on("connection", (socket) => {
-    users.push(socket);
-    console.log(`user connected`);
-    io.sockets.emit("init", "current");
-
-    socket.on("getOdometer", (data) => {
-        console.log(`sending ${data} odometer mileage`);
-        io.sockets.emit("returnOdometer", { miles: getOdometer() });
-    });
-
-    socket.on("getTemp", (data) => {
-        console.log(`sending ${data} temperature`);
-        io.sockets.emit("returnTemp", { temp: getTemp() });
+io.on("connection", (socket) => {
+    console.log("User connected: " + socket.id);
+    bike.on("rpmChange", (rpm) => {
+        io.emit("rpmChange", rpm);
     });
 });
 
-// ################################## BIKE GPIO ########################################
+server.listen(port, () => {
+    console.log(`Server hosted on ${port}`);
+});
 
-bike = {
-    odometer: 20203,
-    temp: 105,
-};
-
-function getTach() {}
-
-function getOdometer() {
-    return bike.odometer;
-}
-
-function getTemp() {
-    return bike.temp;
+var LED = new Gpio(4, "out");
+function toggleLED() {
+    if (LED.readSync() === 0) {
+        LED.writeSync(1);
+    } else {
+        LED.writeSync(0);
+    }
+    // LED.unexport();
 }

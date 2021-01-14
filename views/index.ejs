@@ -1,0 +1,20 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./css/style.css" />
+        <title>Momentum</title>
+    </head>
+    <body>
+        <div id="dash-1">
+            <div id="tach"></div>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./js/momentum.js"></script>
+        <script>
+            momentum.on("rpmChange", (rpm) => {
+                document.getElementById("tach").innerHTML = `<p>${rpm}</p>`;
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,12 @@
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#dash-1 {
+  width: 100%;
+  height: 100%;
+  background-color: #131313;
+}
+/*# sourceMappingURL=style.css.map */
