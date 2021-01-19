@@ -21,7 +21,7 @@ app.use(cors());
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-    res.render("index", { data: "This text was loaded server side and updated. Momentum is working." });
+    res.render("index", { data: "This text was loaded server side and updated twice. Momentum is working." });
 });
 
 io.on("connection", (socket) => {
