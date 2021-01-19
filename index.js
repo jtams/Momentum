@@ -6,7 +6,7 @@ const http = require("http");
 const socketio = require("socket.io");
 const server = http.createServer(app);
 const io = socketio(server);
-var Gpio = require("onoff").Gpio;
+// var Gpio = require("onoff").Gpio;
 const Bike = require("./src/bike.js");
 const bikeData = require("./bike.json");
 
@@ -21,26 +21,26 @@ app.use(cors());
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", { data: "This text was loaded server side. Momentum is working." });
 });
 
 io.on("connection", (socket) => {
     console.log("User connected: " + socket.id);
-    bike.on("rpmChange", (rpm) => {
-        io.emit("rpmChange", rpm);
-    });
+    // bike.on("rpmChange", (rpm) => {
+    //     io.emit("rpmChange", rpm);
+    // });
 });
 
 server.listen(port, () => {
     console.log(`Server hosted on ${port}`);
 });
 
-var LED = new Gpio(4, "out");
-function toggleLED() {
-    if (LED.readSync() === 0) {
-        LED.writeSync(1);
-    } else {
-        LED.writeSync(0);
-    }
-    // LED.unexport();
-}
+// var LED = new Gpio(4, "out");
+// function toggleLED() {
+//     if (LED.readSync() === 0) {
+//         LED.writeSync(1);
+//     } else {
+//         LED.writeSync(0);
+//     }
+//     // LED.unexport();
+// }
