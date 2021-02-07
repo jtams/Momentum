@@ -8,15 +8,127 @@
     </head>
     <body>
         <div id="dash-1">
-            <h1><%= data %></h1>
+            <!-- <h1><%= data %></h1> -->
             <div id="tach"></div>
+            <div id="speed"></div>
+            <div id="gear"></div>
+            <div id="lights">
+                <svg id="blinker-left" viewBox="0 0 451.846 451.847">
+                    <g>
+                        <path
+                            d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744
+		L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284
+		c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z"
+                        />
+                    </g>
+                </svg>
+
+                <svg id="blinker-right" viewBox="0 0 451.846 451.847">
+                    <g>
+                        <path
+                            d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744
+		L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284
+		c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z"
+                        />
+                    </g>
+                </svg>
+
+                <svg id="fuel-warning" viewBox="0 0 512 512">
+                    <g>
+                        <path
+                            d="M494.313,99.375l-64-32c-15.844-7.93-35.047-1.469-42.938,14.313c-7.906,15.813-1.5,35.031,14.313,42.938L448,147.773V368   c0,8.82-7.172,16-16,16s-16-7.18-16-16V240c0-52.938-43.063-96-96-96V64c0-35.289-28.703-64-64-64H96C60.703,0,32,28.711,32,64   v354.742L9.375,441.375C3.375,447.375,0,455.516,0,464v16c0,17.672,14.328,32,32,32h288c17.672,0,32-14.328,32-32v-16   c0-8.484-3.375-16.625-9.375-22.625L320,418.742V208c17.641,0,32,14.352,32,32v128c0,44.109,35.891,80,80,80s80-35.891,80-80V128   C512,115.883,505.156,104.797,494.313,99.375z M272,223.997h-85.164l-27.977-69.942c-3.281-8.203-12.672-12.172-20.797-8.914   c-8.203,3.289-12.203,12.594-8.922,20.805l23.221,58.052H80v-160c0-8.837,7.163-16,16-16h160c8.837,0,16,7.163,16,16V223.997z"
+                        />
+                        <circle cx="176" cy="95.997" r="16" />
+                        <circle cx="240" cy="111.997" r="16" />
+                        <circle cx="112" cy="111.997" r="16" />
+                    </g>
+                </svg>
+
+                <svg id="overheat" viewBox="0 0 224.594 224.594">
+                    <path
+                        d="M139.698,128.048V27.401C139.698,12.292,127.406,0,112.297,0S84.896,12.292,84.896,27.401v100.647
+	c-15.385,9.466-24.759,26.073-24.759,44.385c0,28.761,23.399,52.161,52.16,52.161s52.16-23.399,52.16-52.161
+	C164.457,154.122,155.083,137.515,139.698,128.048z M111.663,200.274c-14.612,0-26.5-11.888-26.5-26.5
+	c0-12.238,8.34-22.56,19.634-25.593V27.699c0-4.142,3.357-7.5,7.5-7.5s7.5,3.358,7.5,7.5v120.857
+	c10.644,3.441,18.366,13.443,18.366,25.218C138.163,188.387,126.276,200.274,111.663,200.274z"
+                    />
+                </svg>
+            </div>
         </div>
         <script src="/socket.io/socket.io.js"></script>
         <script src="./js/momentum.js"></script>
         <script>
-            momentum.on("rpmChange", (rpm) => {
-                document.getElementById("tach").innerHTML = `<p>${rpm}</p>`;
+            momentum.init((bike) => {
+                momentum.on("rpmChange", (rpm) => {
+                    document.getElementById("tach").style.width = 100 / (bike.redline / rpm) + "%";
+                    if (100 / (bike.redline / rpm) > 80) {
+                        document.getElementById("tach").style.backgroundColor = "red";
+                    } else if (100 / (bike.redline / rpm) > 70) {
+                        document.getElementById("tach").style.backgroundColor = "yellow";
+                    } else {
+                        document.getElementById("tach").style.backgroundColor = "white";
+                    }
+                });
+
+                momentum.on("speedChange", (speed) => {
+                    document.getElementById("speed").innerHTML = `<p>${speed} <span class="mph">MPH</span></p>`;
+                });
+
+                // momentum.on("gearChange", (gear) => {
+                //     if (gear == 0) {
+                //         gear = "N";
+                //     }
+                //     document.getElementById("gear").innerHTML = `<p>GEAR: ${gear}</p>`;
+                // });
+
+                momentum.on("lightChange", (lights) => {
+                    // document.getElementById("lights").innerHTML = "";
+                    // lights.forEach((light) => {
+                    //     document.getElementById("lights").innerHTML += `<p>${light.name}, Enabled: ${light.enabled}</p>`;
+                    // });
+
+                    lights.forEach((light) => {
+                        if (light.name == "blinkerLeft") {
+                            if (light.enabled) {
+                                setTimeout(() => {
+                                    document.getElementById("blinker-left").classList.add("left-enabled");
+                                }, 55); //Small delay to sync hazards
+                            } else {
+                                document.getElementById("blinker-left").classList.remove("left-enabled");
+                            }
+                        }
+
+                        if (light.name == "blinkerRight") {
+                            if (light.enabled) {
+                                document.getElementById("blinker-right").classList.add("right-enabled");
+                            } else {
+                                document.getElementById("blinker-right").classList.remove("right-enabled");
+                            }
+                        }
+                    });
+                });
             });
+
+            // Initialize tachometer
+            // function initTach() {
+            //     var lineThickness = 40;
+            //     var lineCount = window.innerWidth / lineThickness;
+            //     for (var i = 0; i < lineCount; i++) {
+            //         let line = document.createElement("div");
+            //         line.className = "tachLine";
+            //         if (i > (lineCount / 3) * 2) {
+            //             line.classList.add("warningTach");
+            //         }
+            //         if (i > (lineCount / 3) * 2.8) {
+            //             line.classList.add("redTach");
+            //         }
+            //         document.getElementById("tach").appendChild(line);
+            //     }
+            // }
+
+            // momentum.on("rpmChange", (rpm) => {
+            //     document.getElementById("tach").innerHTML = `<p>${rpm} RPM</p>`;
+            // });
         </script>
     </body>
 </html>

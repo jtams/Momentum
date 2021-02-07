@@ -21,14 +21,39 @@ app.use(cors());
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-    res.render("index", { data: "This text was loaded server side and updated twice. Momentum is working." });
+    res.render("index", { data: "If you're seeing this. Momentum's back-end services are running!" });
 });
 
 io.on("connection", (socket) => {
     console.log("User connected: " + socket.id);
-    // bike.on("rpmChange", (rpm) => {
-    //     io.emit("rpmChange", rpm);
-    // });
+    socket.on("get", (info) => {
+        try {
+            let res = bike[info];
+            io.emit("res", bike[info]);
+        } catch (err) {
+            io.emit("res", "error");
+        }
+    });
+
+    socket.on("init", () => {
+        io.emit("init", JSON.stringify(bike));
+    });
+});
+
+bike.on("rpmChange", (rpm) => {
+    io.emit("rpmChange", rpm);
+});
+
+bike.on("speedChange", (speed) => {
+    io.emit("speedChange", speed);
+});
+
+bike.on("gearChange", (gear) => {
+    io.emit("gearChange", gear);
+});
+
+bike.on("lightChange", (data) => {
+    io.emit("lightChange", data);
 });
 
 server.listen(port, () => {

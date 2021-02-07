@@ -6,5 +6,6 @@
     "rearSprocketTeeth": 45,
     "tireDiameter": 30,
     "pulsesPerRevolution": 2,
-    "miles": 20000
+    "miles": 20000,
+    "redline": 11000
 }
