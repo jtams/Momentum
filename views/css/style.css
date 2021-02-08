@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Major";
+  src: url("/css/SpaceMono-Regular.ttf");
+}
+
 body {
   overflow: hidden;
   margin: 0;
@@ -24,24 +29,72 @@ body {
   transition: width 0.05s;
 }
 
+#dash-1 #tach2 .progress-ring {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#dash-1 #tach2 .progress-ring__circle {
+  -webkit-transition: 0.1s stroke-dashoffset;
+  transition: 0.1s stroke-dashoffset;
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+}
+
+#dash-1 #neutral {
+  width: 40px;
+  height: 40px;
+  margin-left: 35px;
+  fill: rgba(0, 255, 13, 0.062);
+}
+
 #dash-1 #speed {
   text-align: center;
-  font-size: 130px;
+  font-size: 180px;
+  font-family: Major;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 #dash-1 #speed span {
   font-size: 20px;
 }
 
+#dash-1 #neutral-container {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  margin-top: 30px;
+  margin-left: 95px;
+}
+
 #dash-1 #lights {
   width: 95%;
   margin: auto;
+  position: absolute;
+  bottom: 50px;
+  left: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
 }
 
 #dash-1 #blinker-left {
-  width: 90px;
-  height: 90px;
-  fill: #1e5a1e;
+  width: 80px;
+  height: 80px;
+  fill: rgba(0, 255, 13, 0.137);
   -webkit-transform: translateX(0px) rotate(180deg);
           transform: translateX(0px) rotate(180deg);
   -webkit-transition: 0.5s;
@@ -60,9 +113,9 @@ body {
 }
 
 #dash-1 #blinker-right {
-  width: 90px;
-  height: 90px;
-  fill: #1e5a1e;
+  width: 80px;
+  height: 80px;
+  fill: rgba(0, 255, 13, 0.137);
   -webkit-transform: translateX(0px);
           transform: translateX(0px);
   -webkit-transition: 0.5s;
@@ -99,7 +152,7 @@ body {
   100% {
     -webkit-transform: translateX(0px) rotate(180deg);
             transform: translateX(0px) rotate(180deg);
-    fill: #1e5a1e;
+    fill: rgba(0, 255, 13, 0.137);
   }
 }
 
@@ -122,7 +175,7 @@ body {
   100% {
     -webkit-transform: translateX(0px) rotate(180deg);
             transform: translateX(0px) rotate(180deg);
-    fill: #1e5a1e;
+    fill: rgba(0, 255, 13, 0.137);
   }
 }
 
@@ -144,7 +197,7 @@ body {
   100% {
     -webkit-transform: translateX(0px);
             transform: translateX(0px);
-    fill: #1e5a1e;
+    fill: rgba(0, 255, 13, 0.137);
   }
 }
 
@@ -166,28 +219,34 @@ body {
   100% {
     -webkit-transform: translateX(0px);
             transform: translateX(0px);
-    fill: #1e5a1e;
+    fill: rgba(0, 255, 13, 0.137);
   }
 }
 
 #dash-1 #fuel-warning {
-  width: 90px;
-  height: 90px;
-  margin-left: 75px;
+  width: 80px;
+  height: 80px;
   fill: rgba(255, 217, 0, 0.123);
 }
 
 #dash-1 #overheat {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   margin-left: 35px;
   fill: rgba(224, 10, 10, 0.192);
 }
 
-#dash-1 #neutral {
-  width: 90px;
-  height: 90px;
+#dash-1 #oil-pressure {
+  width: 80px;
+  height: 80px;
   margin-left: 35px;
-  fill: #00ff0d;
+  fill: rgba(255, 115, 0, 0.164);
+}
+
+#dash-1 #fi-light {
+  width: 80px;
+  height: 80px;
+  margin-left: 35px;
+  fill: rgba(224, 10, 10, 0.192);
 }
 /*# sourceMappingURL=style.css.map */

@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "Major";
+    src: url("/css/SpaceMono-Regular.ttf");
+}
+
+$icon-size: 80px;
+
 body {
     overflow: hidden;
     margin: 0;
@@ -34,23 +41,66 @@ body {
         border-radius: 3px;
         transition: width 0.05s;
     }
+
+    #tach2 {
+        .progress-ring {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .progress-ring__circle {
+            transition: 0.1s stroke-dashoffset;
+            // axis compensation
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    }
+
+    #neutral {
+        width: 40px;
+        height: 40px;
+        margin-left: 35px;
+        // fill: rgb(0, 255, 13);
+        fill: rgba(0, 255, 13, 0.062);
+    }
+
     #speed {
         text-align: center;
-        font-size: 130px;
+        font-size: 180px;
+        font-family: Major;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         span {
             font-size: 20px;
         }
     }
 
+    #neutral-container {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin-top: 30px;
+        margin-left: 95px;
+    }
+
     #lights {
         width: 95%;
         margin: auto;
+        position: absolute;
+        bottom: 50px;
+        left: 0px;
+        display: flex;
+        justify-content: space-around;
     }
 
     #blinker-left {
-        width: 90px;
-        height: 90px;
-        fill: rgb(30, 90, 30);
+        width: $icon-size;
+        height: $icon-size;
+        fill: rgba(0, 255, 13, 0.137);
         transform: translateX(0px) rotate(180deg);
         transition: 0.5s;
     }
@@ -63,9 +113,9 @@ body {
     }
 
     #blinker-right {
-        width: 90px;
-        height: 90px;
-        fill: rgb(30, 90, 30);
+        width: $icon-size;
+        height: $icon-size;
+        fill: rgba(0, 255, 13, 0.137);
         transform: translateX(0px);
         transition: 0.5s;
     }
@@ -92,7 +142,7 @@ body {
         }
         100% {
             transform: translateX(0px) rotate(180deg);
-            fill: rgb(30, 90, 30);
+            fill: rgba(0, 255, 13, 0.137);
         }
     }
 
@@ -111,30 +161,38 @@ body {
         }
         100% {
             transform: translateX(0px);
-            fill: rgb(30, 90, 30);
+            fill: rgba(0, 255, 13, 0.137);
         }
     }
 
     #fuel-warning {
-        width: 90px;
-        height: 90px;
-        margin-left: 75px;
+        width: $icon-size;
+        height: $icon-size;
         fill: rgba(255, 217, 0, 0.123);
         // fill: rgb(235, 201, 14);
     }
 
     #overheat {
-        width: 90px;
-        height: 90px;
+        width: $icon-size;
+        height: $icon-size;
         margin-left: 35px;
         fill: rgba(224, 10, 10, 0.192);
         // fill: rgb(224, 10, 10);
     }
 
-    #neutral {
-        width: 90px;
-        height: 90px;
+    #oil-pressure {
+        width: $icon-size;
+        height: $icon-size;
         margin-left: 35px;
-        fill: rgb(0, 255, 13);
+        fill: rgba(255, 115, 0, 0.164);
+        // fill: rgb(255, 115, 0);
+    }
+
+    #fi-light {
+        width: $icon-size;
+        height: $icon-size;
+        margin-left: 35px;
+        // fill: rgba(224, 10, 10);
+        fill: rgba(224, 10, 10, 0.192);
     }
 }

@@ -102,6 +102,11 @@ module.exports = class Bike {
             callback([
                 { name: "blinkerLeft", enabled: enabled },
                 { name: "blinkerRight", enabled: enabled },
+                { name: "neutral", enabled: enabled },
+                { name: "temp-warning", enabled: enabled },
+                { name: "engine", enabled: enabled },
+                { name: "oil", enabled: enabled },
+                { name: "fuel", enabled: enabled },
             ]);
         }, 600);
     }
