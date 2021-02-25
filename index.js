@@ -6,6 +6,7 @@ const http = require("http");
 const socketio = require("socket.io");
 const server = http.createServer(app);
 const io = socketio(server);
+
 // var Gpio = require("onoff").Gpio;
 const Bike = require("./src/bike.js");
 const bikeData = require("./bike.json");
@@ -54,6 +55,10 @@ bike.on("gearChange", (gear) => {
 
 bike.on("lightChange", (data) => {
     io.emit("lightChange", data);
+});
+
+bike.on("serialLightTest", (data) => {
+    io.emit("serialLightTest", data);
 });
 
 server.listen(port, () => {

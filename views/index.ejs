@@ -7,6 +7,7 @@
         <title>Momentum</title>
     </head>
     <body>
+        <div id="data-serial"></div>
         <div id="dash-1">
             <!-- <h1><%= data %></h1> -->
             <!-- <div id="tach"></div> -->
@@ -216,6 +217,10 @@
                             }
                         }
                     });
+                });
+
+                momentum.on("serialLightTest", (data) => {
+                    document.getElementById("data-serial").innerHTML = `<p>${data}</p>`;
                 });
             });
 

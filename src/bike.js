@@ -1,4 +1,9 @@
 // var Gpio = require("onoff").Gpio;
+const serialport = require("serialport");
+const readline = require("@serialport/parser-readline");
+
+const port = new serialport("/dev/ttyACM0", { baudRate: 19200 });
+const parser = port.pipe(new readline({ delimiter: "\n" }));
 
 module.exports = class Bike {
     constructor({ make, model, frontSproketTeeth, rearSproketTeeth, tireDiameter, pulsesPerRevolution, redline } = {}) {
@@ -30,6 +35,8 @@ module.exports = class Bike {
             this.gearIO(callback);
         } else if (type === "lightChange") {
             this.lightIO(callback);
+        } else if (type === "serialLightTest") {
+            this.serialLightTest(callback);
         }
     }
 
@@ -109,5 +116,11 @@ module.exports = class Bike {
                 { name: "fuel", enabled: enabled },
             ]);
         }, 600);
+    }
+
+    serialLightTest(callback) {
+        parser.on("data", (data) => {
+            callback(data);
+        });
     }
 };

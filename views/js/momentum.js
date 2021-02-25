@@ -15,6 +15,8 @@ const momentum = {
             case "lightChange":
                 lightListener(callback);
                 break;
+            case "serialLightTest":
+                serialLightTest(callback);
             default:
                 break;
         }
@@ -51,6 +53,12 @@ function gearListener(callback) {
 
 function lightListener(callback) {
     socket.on("lightChange", (e) => {
+        callback(e);
+    });
+}
+
+function serialLightTest(callback) {
+    socket.on("serialLightTest", (e) => {
         callback(e);
     });
 }
