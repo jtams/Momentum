@@ -57,10 +57,10 @@ module.exports = class Bike {
         parser.on("data", (data) => {
             if (data.slice(0, 10) == "speedPulse") {
                 var bikeSpeed = this.frontSprocketTeeth / parseInt(data.split(":")[1]);
-                console.log(this.frontSprocketTeeth, parseInt(data.split(":")[1]));
                 bikeSpeed *= 200;
                 bikeSpeed = bikeSpeed * (63360 / this.wheelCirc);
                 bikeSpeed = 3600000 / bikeSpeed;
+                console.log(bikeSpeed);
                 callback(parseInt(bikeSpeed));
             }
         });
