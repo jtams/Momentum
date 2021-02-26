@@ -4,7 +4,7 @@
     "year": "2007",
     "frontSprocketTeeth": 15,
     "rearSprocketTeeth": 45,
-    "tireDiameter": 30,
+    "tireCirc": 76.97,
     "pulsesPerRevolution": 2,
     "miles": 20000,
     "redline": 11000

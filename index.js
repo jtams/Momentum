@@ -49,16 +49,8 @@ bike.on("speedChange", (speed) => {
     io.emit("speedChange", speed);
 });
 
-bike.on("gearChange", (gear) => {
-    io.emit("gearChange", gear);
-});
-
 bike.on("lightChange", (data) => {
     io.emit("lightChange", data);
-});
-
-bike.on("serialLightTest", (data) => {
-    io.emit("serialLightTest", data);
 });
 
 server.listen(port, () => {

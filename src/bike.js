@@ -1,4 +1,4 @@
-// var Gpio = require("onoff").Gpio;
+var Gpio = require("onoff").Gpio;
 const serialport = require("serialport");
 const readline = require("@serialport/parser-readline");
 
@@ -6,12 +6,12 @@ const port = new serialport("/dev/ttyACM0", { baudRate: 19200 });
 const parser = port.pipe(new readline({ delimiter: "\n" }));
 
 module.exports = class Bike {
-    constructor({ make, model, frontSproketTeeth, rearSproketTeeth, tireDiameter, pulsesPerRevolution, redline } = {}) {
+    constructor({ make, model, frontSproketTeeth, rearSproketTeeth, tireCirc, pulsesPerRevolution, redline } = {}) {
         this.make = make;
         this.model = model;
         this.frontSproketTeeth = frontSproketTeeth;
         this.rearSproketTeeth = rearSproketTeeth;
-        this.tireDiameter = tireDiameter;
+        this.tireCirc = tireCirc;
         this.pulsesPerRevolution = pulsesPerRevolution;
         this.redline = redline;
         this.active = true;
@@ -24,6 +24,11 @@ module.exports = class Bike {
         this.speed = 0;
         this.gear = 1;
         this.lights = [];
+
+        this.neutralInput = new Gpio(4, "in", "both");
+        this.highbeamInput = new Gpio(5, "in", "both");
+        this.leftindicatorInput = new Gpio(6, "in", "both");
+        this.rightindicatorInput = new Gpio(7, "in", "both");
     }
 
     on(type, callback) {
@@ -41,51 +46,23 @@ module.exports = class Bike {
     }
 
     rpmIO(callback) {
-        // THIS IS WHERE THE CODE FOR RPM GOES
-        // var rpmPin = new Gpio(8, "in");
-        // var step = 0;
-        // while (this.active) {
-        //     let rpmTiming = Date.now();
-        //     if (rpmPin.readSync() === 1 && step == 0) {
-        //         var timer = Date.now();
-        //         step = 1;
-        //     }
-        //     if (rpmPin.readSync() === 0 && step == 1) {
-        //         step = 2;
-        //     }
-        //     if (rpmPin.readSync() === 0 && step == 2) {
-        //         // RPM is calculated based on a full rotation. On most bikes it can be 2 times as accurate but it wouldn't be noticible.
-        //         let rpm = (Date.now() - timer) * this.pulsesPerRevolution; //Miliseconds it took for one revolution
-        //         rpm = 3600000 / rpm; // Hour divided by the miliseconds it took for one revolution. The revolutions per hour.
-        //         this.rpm = rpm;
-        //         callback(rpm);
-        //         step = 0;
-        //     }
-        //     this.diagnostics.rpmTiming = Date.now() - rpmTiming; //Updates to frequency of RPM calculations.
-        // }
-        var rpm = 1000;
-        setInterval(() => {
-            rpm += 160 / this.gear;
-            if (rpm >= 9900) {
-                rpm = 7000;
-                if (this.gear == 6) {
-                    rpm = 1000;
-                    this.gear = 1;
-                    this.speed = 0;
-                } else {
-                    this.gear++;
-                }
+        parser.on("data", (data) => {
+            if (data.slice(0, 3) == "RPM") {
+                callback(data.split(":")[1]);
             }
-            callback(rpm);
-        }, 20);
+        });
     }
 
     speedIO(callback) {
-        //THIS IS WHERE THE CODE FOR SPEED GOES
-        setInterval(() => {
-            this.speed += Math.round(3 / this.gear);
-            callback(this.speed);
-        }, 200);
+        parser.on("data", (data) => {
+            if (data.slice(0, 10) == "speedPulse") {
+                var bikeSpeed = this.frontSproketTeeth / data.split(":")[1];
+                bikeSpeed *= 200;
+                bikeSpeed = bikeSpeed * (63360 / this.wheelCirc);
+                bikeSpeed = 3600000 / bikeSpeed;
+                callback(bikeSpeed);
+            }
+        });
     }
 
     gearIO(callback) {
@@ -102,25 +79,42 @@ module.exports = class Bike {
     }
 
     lightIO(callback) {
-        //Lights = Blinker left, blinker right, fuel, etc...
-        var enabled = true;
         setInterval(() => {
-            enabled = !enabled;
-            callback([
-                { name: "blinkerLeft", enabled: enabled },
-                { name: "blinkerRight", enabled: enabled },
-                { name: "neutral", enabled: enabled },
-                { name: "temp-warning", enabled: enabled },
-                { name: "engine", enabled: enabled },
-                { name: "oil", enabled: enabled },
-                { name: "fuel", enabled: enabled },
-            ]);
-        }, 600);
-    }
+            var lights = [];
 
-    serialLightTest(callback) {
-        parser.on("data", (data) => {
-            callback(data);
-        });
+            this.neutralInput.watch((err, value) => {
+                if (value == 1) {
+                    lights.push({ name: "neutral", enabled: true });
+                } else {
+                    lights.push({ name: "neutral", enabled: false });
+                }
+            });
+
+            this.highbeamInput.watch((err, value) => {
+                if (value == 1) {
+                    lights.push({ name: "highbeam", enabled: true });
+                } else {
+                    lights.push({ name: "highbeam", enabled: false });
+                }
+            });
+
+            this.leftindicatorInput.watch((err, value) => {
+                if (value == 1) {
+                    lights.push({ name: "blinkerLeft", enabled: true });
+                } else {
+                    lights.push({ name: "blinkerLeft", enabled: false });
+                }
+            });
+
+            this.rightindicatorInput.watch((err, value) => {
+                if (value == 1) {
+                    lights.push({ name: "blinkerRight", enabled: true });
+                } else {
+                    lights.push({ name: "blinkerRight", enabled: false });
+                }
+            });
+
+            callback(lights);
+        }, 100);
     }
 };
