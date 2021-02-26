@@ -6,10 +6,10 @@ const port = new serialport("/dev/ttyACM0", { baudRate: 19200 });
 const parser = port.pipe(new readline({ delimiter: "\n" }));
 
 module.exports = class Bike {
-    constructor({ make, model, frontSproketTeeth, rearSproketTeeth, tireCirc, pulsesPerRevolution, redline } = {}) {
+    constructor({ make, model, frontSprocketTeeth, rearSproketTeeth, tireCirc, pulsesPerRevolution, redline } = {}) {
         this.make = make;
         this.model = model;
-        this.frontSproketTeeth = frontSproketTeeth;
+        this.frontSprocketTeeth = frontSprocketTeeth;
         this.rearSproketTeeth = rearSproketTeeth;
         this.tireCirc = tireCirc;
         this.pulsesPerRevolution = pulsesPerRevolution;
