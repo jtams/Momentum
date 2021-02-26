@@ -2,7 +2,7 @@
     "make": "Kawasaki",
     "model": "Ninja 650R",
     "year": "2007",
-    "frontSprocketTeeth": 15,
+    "frontSprocketTeeth": 12,
     "rearSprocketTeeth": 45,
     "tireCirc": 76.97,
     "pulsesPerRevolution": 2,
